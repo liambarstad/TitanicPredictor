@@ -1,5 +1,4 @@
 import csv
-#import django
 from django.core.management.base import BaseCommand, CommandError
 from Predictor.models import Passenger
 
@@ -17,7 +16,7 @@ class Command(BaseCommand):
                 next(reader, None)
                 for row in reader:
                     ind += 1
-                    passenger = Passenger.objects.csv_create(row)
+                    passenger = Passenger.objects.csv_create(row, 'train')
                     print("passenger {passenger_name} created".format(passenger_name=passenger.passenger_name))
             except csv.Error as error:
                 sys.exit("{error} at line ${ind}".format(error, ind))

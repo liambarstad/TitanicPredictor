@@ -1,8 +1,9 @@
 from django.db import models
 
 class PassengerManager(models.Manager):
-    def csv_create(self, row):
+    def csv_create(self, row, purpose):
         return self.get_or_create(
+            passenger_type=self.format_passenger_type(purpose)            
             survived=self.format_int(row[1]),
             ticket_class=self.format_int(row[2]),
             passenger_name=row[3],
@@ -15,6 +16,10 @@ class PassengerManager(models.Manager):
             cabin=row[10],
             embarked_from=self.format_embarked_from(row[11]),
                 )[0]
+
+    def format_passenger_type(purpose):
+        purposes = {'train': 0, 'test': 1, 'consumer': 2}
+        return purposes[purpose]
 
     def format_int(self, value):
         if value:
@@ -44,6 +49,7 @@ class PassengerManager(models.Manager):
             return 3
 
 class Passenger(models.Model):
+    passenger_type = models.IntegerField()
     survived = models.IntegerField()
     ticket_class = models.IntegerField()
     passenger_name = models.CharField(max_length=20)
