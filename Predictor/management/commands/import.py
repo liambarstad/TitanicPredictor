@@ -12,9 +12,12 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         with open("./Predictor/data/train.csv") as f:
             reader = csv.reader(f)
+            ind = 0
             try:
                 next(reader, None)
                 for row in reader:
-                    _ = Passenger.objects.csv_create(row)
+                    ind += 1
+                    passenger = Passenger.objects.csv_create(row)
+                    print("passenger {passenger_name} created".format(passenger_name=passenger.passenger_name))
             except csv.Error as error:
-                sys.exit(error)
+                sys.exit("{error} at line ${ind}".format(error, ind))
