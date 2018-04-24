@@ -1,5 +1,5 @@
-from models import Passenger
 from py2neo import Graph
+from neuron import Neuron 
 
 class Brain:
     def __init__(self):
