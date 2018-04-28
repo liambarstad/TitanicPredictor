@@ -1,11 +1,11 @@
 import urllib3
 #from bs4 import BeautifulSoup
-from Predictor.models import Passenger
+from Predictor.models.passenger import Passenger
 from subprocess import call
 
 def scrape():
     test_data = Passenger.objects.all().filter(passenger_type='test')
-    if !test_data:
+    if not test_data:
        call('python3 manage.py import')
     test_data = Passenger.objects.all.filter(passenger_type='test')
     http = urllib3.PoolManager()
@@ -15,7 +15,7 @@ def scrape():
         if req.status == 200:
             passenger.survived = 1
             passenger.save()
-            print("passenger ${name} survived".format(name=passenger.passenger_name)
+            print("passenger ${name} survived".format(name=passenger.passenger_name))
         else:
             passenger.survived = 0
             passenger.save()

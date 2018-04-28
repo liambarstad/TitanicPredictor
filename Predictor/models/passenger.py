@@ -1,4 +1,4 @@
-from passenger_manager import PassengerManager
+from Predictor.models.passenger_manager import PassengerManager
 from django.db import models
 
 class Passenger(models.Model):

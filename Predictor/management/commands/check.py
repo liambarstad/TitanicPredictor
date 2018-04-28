@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from Predictor.scripts.train import test
+from Predictor.scripts.check import check
 
 class Command(BaseCommand):
     help = 'tests network from test data'
@@ -8,4 +8,4 @@ class Command(BaseCommand):
         pass
 
     def handle(self, *args, **options):
-        test()
+        check()

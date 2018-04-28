@@ -1,6 +1,6 @@
 import csv
 from django.core.management.base import BaseCommand, CommandError
-from Predictor.models import Passenger
+from Predictor.models.passenger import Passenger
 
 class Command(BaseCommand):
     help = 'imports and seeds data from csv'

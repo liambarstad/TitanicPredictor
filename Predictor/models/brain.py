@@ -1,12 +1,15 @@
 from py2neo import Graph
-from neuron import Neuron 
+from Predictor.models.neuron import Neuron 
+from TitanicPredictor.secrets import secrets
 
 class Brain:
     def __init__(self):
-        self.graph = Graph()
+        self.graph = Graph(user=secrets['db_user'], password=secrets['db_pass'])
 
     def add_passenger(self, passenger):
         # all aboard the brain train
+         
+        '''
         transaction = self.graph.begin()
         head = Node('Passenger', name=passenger.passenger_name)
         transaction.create(head)
@@ -16,6 +19,8 @@ class Brain:
             tether = Relationship(head, 'has attribute', new_node)
             transaction.create(tether) 
         transaction.commit()
+        '''
+
         # add Passenger node 'Passenger'
         # initialize into numpy array
         # train
@@ -25,6 +30,7 @@ class Brain:
         # if passenger is training, backpropogate
 
     def _train(self, passenger):
+        pass
         # choo choo
 
         # find activation groups
@@ -32,15 +38,19 @@ class Brain:
         # second_selection
 
     def _train_secondary(self, bleh):
+        pass
         # same shit
 
     def _train_tertiary(self, bleh):
+        pass
         # more of the same shit
 
     def _answer(self, bleh):
+        pass
         # fuck it
 
     def _backpropogate(self, bleh):
+        pass
         # shit son
 
 # input Passenger object
