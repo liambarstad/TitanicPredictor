@@ -1,11 +1,12 @@
-from py2neo import Node, Relationship
+from py2neo.ogm import GraphObject, Property
 
+'''
 class Neuron:
-    def __init__(self, title, **kwargs):
+    def __init__(self, title, graph, **kwargs):
         self.title = title
-        self.graph = kwargs.graph
-        self.properties = kwargs.properties
-        self.node = self.create_node(kwargs)
+        self.graph = graph
+        self.properties = kwargs
+        self.node = self._create_node()
 
     def create_relationship(nodes, message, **kwargs):
         tr = self.graph.begin()
@@ -15,10 +16,10 @@ class Neuron:
         tr.commit()
             
 
-    def _create_node(self, **kwargs):
+    def _create_node(self):
         tr = self.graph.begin()
         head = Node(self.title, self.properites.KEYWORDIMIFIZE) 
         tr.create(head)
-        if tr.commit():
-            return head
-
+        tr.commit()
+        return head
+'''

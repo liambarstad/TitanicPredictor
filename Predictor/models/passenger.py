@@ -1,5 +1,7 @@
+import re
 from Predictor.models.passenger_manager import PassengerManager
 from django.db import models
+from django.forms.models import model_to_dict
 
 class Passenger(models.Model):
     passenger_type = models.IntegerField()
@@ -17,12 +19,18 @@ class Passenger(models.Model):
 
     objects = PassengerManager()
 
+    def to_dict(self):
+        attrs = model_to_dict(self)
+        attrs.pop('passenger_name')
+        attrs.pop('passenger_type')
+        attrs.pop('survived')
+        return attrs
+
     def url_name(self):
         name_arr = self.passenger_name.split()
-        name_arr.pop('Mr.', 'Mrs.')
-        if name_arr[0]:
-            last_name = name_arr.unshift()
-            name_arr.shift(last_name)
-        name_arr.map('...')
-        # ^ make lowercase
-        return name_arr.join('-')
+        if 'Mr.' in name_arr: name_arr.remove('Mr.')
+        if 'Mrs.' in name_arr: name_arr.remove('Mrs.')
+        last_name = name_arr.pop(0)
+        name_arr.append(last_name)
+        name = '-'.join(name_arr).lower()
+        return re.sub('[,. ]', '', name)

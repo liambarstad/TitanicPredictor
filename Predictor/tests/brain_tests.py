@@ -1,8 +1,8 @@
 from django.test import TestCase
 from py2neo import Graph, Node, Relationship
 from TitanicPredictor.secrets import secrets
-from Predictor.models.brain import Brain
-from Predictor.models.passenger import Passenger
+from Predictor.models.objects.brain import Brain
+from Predictor.models import Passenger
 
 class TestBrain(TestCase):
     def setUp(self):
