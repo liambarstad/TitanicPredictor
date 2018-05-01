@@ -1,7 +1,5 @@
-from py2neo.ogm import GraphObject, Property, RelatedTo, RelatedFrom
+from Predictor.models.nodes.application_graph_object import ApplicationGraphObject
+from py2neo.ogm import Property
 
-class PrimaryNeuron(GraphObject):
+class PrimaryNeuron(ApplicationGraphObject):
     activation = Property('activation')
-
-    attributes = RelatedFrom('Attribute', 'FROM_ATTRIBUTE')
-    next_layer = RelatedTo('SecondaryNeuron', 'LEADS_TO')

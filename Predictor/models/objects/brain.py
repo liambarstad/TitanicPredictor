@@ -1,6 +1,7 @@
 from py2neo import Graph
 from py2neo.ogm import RelatedObjects
-from Predictor.models.nodes import *
+from Predictor.models.nodes.person import Person
+from Predictor.models.nodes.attribute import Attribute
 from TitanicPredictor.secrets import secrets
 
 class Brain:
@@ -10,17 +11,10 @@ class Brain:
     def add_passenger(self, passenger):
         new_passenger = Person()
         new_passenger.name = passenger.passenger_name
-        for key, value in passenger.to_dict():
+        for key, value in passenger.to_dict().items():
             attribute = Attribute()
             attribute.attribute_name = key
             attribute.value = value
-            new_passenger.attributes.add(attribute) 
+            new_passenger.create_relationship(self.graph, attribute, 'HAS_ATTRIBUTE')
         self.graph.push(new_passenger)
-        # add Passenger node 'Passenger'
-        # initialize into numpy array
-        # train
-        # train_secondary
-        # train_tertiary
-        # answer
-        # if passenger is training, backpropogate
 

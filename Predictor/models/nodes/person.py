@@ -1,8 +1,7 @@
-from py2neo.ogm import GraphObject, Property, RelatedTo
+from Predictor.models.nodes.application_graph_object import ApplicationGraphObject
+from py2neo.ogm import Property
 
-class Person(GraphObject):
+class Person(ApplicationGraphObject):
     __primarykey__ = 'name'
 
     name = Property('name')
-
-    attributes = RelatedTo('Attribute', 'HAS_ATTRIBUTE')
