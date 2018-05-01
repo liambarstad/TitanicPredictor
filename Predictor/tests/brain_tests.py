@@ -7,12 +7,13 @@ from Predictor.models import Passenger
 class TestBrain(TestCase):
     def setUp(self):
         self.graph = Graph(user=secrets['db_user'], password=secrets['db_pass'])
+        self.brain = Brain()
 
     def tearDown(self):
         self.graph.delete_all()
 
     def test_brain_can_record_passenger(self):
-        pass
+        pass 
 
     def test_brain_can_create_second_layer(self):
         pass
