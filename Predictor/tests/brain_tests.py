@@ -3,6 +3,7 @@ from py2neo import Graph, Node, Relationship
 from TitanicPredictor.secrets import secrets
 from Predictor.models.objects.brain import Brain
 from Predictor.models import Passenger
+from Predictor.tests.factories.passenger_factory import PassengerFactory
 
 class TestBrain(TestCase):
     def setUp(self):
@@ -13,7 +14,10 @@ class TestBrain(TestCase):
         self.graph.delete_all()
 
     def test_brain_can_record_passenger(self):
-        pass 
+        passenger = PassengerFactory
+        self.brain.add_passenger(passenger)
+        # expect passenger node
+        # expect each attribute node
 
     def test_brain_can_create_second_layer(self):
         pass
