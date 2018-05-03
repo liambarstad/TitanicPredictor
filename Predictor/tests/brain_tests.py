@@ -21,6 +21,7 @@ class TestBrain(TestCase):
         new_people = list(Person.select(self.graph)) 
         new_attrs = list(Attribute.select(self.graph))
         new_person = Person.select(self.graph).first()
+        related_attrs = self.graph.match(start_node=new_person, rel_type='HAS_ATTRIBUTE')
         self.assertEqual(len(new_people), 1)
         self.assertEqual(len(new_attrs), 10)
         self.assertEqual(new_person.name, passenger.passenger_name) 
