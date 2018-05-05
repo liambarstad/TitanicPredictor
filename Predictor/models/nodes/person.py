@@ -5,3 +5,4 @@ class Person(ApplicationGraphObject):
     __primarykey__ = 'name'
 
     name = Property('name')
+    result = Property('result')

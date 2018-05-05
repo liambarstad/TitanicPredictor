@@ -25,6 +25,8 @@ NOSE_ARGS = [
     '--with-coverage',
     '--cover-package=Predictor',
     '--cover-inclusive',
+    '--pdb',
+    '-s',
 ] 
 
 MIDDLEWARE = [

@@ -6,3 +6,5 @@ class Attribute(ApplicationGraphObject):
     
     attribute_name = Property('attribute_name')
     value = Property('value') 
+    weight = Property('weight')
+    bias = Property('bias')
