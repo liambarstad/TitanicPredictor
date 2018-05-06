@@ -40,8 +40,6 @@ class TestBrain(TestCase):
         self.assertEqual(new_neuron.activation, 1)
 
     def test_brain_can_backpropogate_single_neuron(self):
-        pass
-        '''
         passenger = PassengerFactory()
         self.brain.add_passenger(passenger)
         old_attrs = list(Attribute.select(self.graph))
@@ -55,9 +53,11 @@ class TestBrain(TestCase):
 
         self.assertNotEqual(old_weight, new_weight)
         self.assertNotEqual(old_bias, new_bias)
-        '''
 
     def test_brain_can_add_next_neuron(self):
+        pass
+
+    def test_brain_can_backpropogate_binned_values(self):
         pass
 
     def test_brain_can_backpropogate_next_neuron(self):

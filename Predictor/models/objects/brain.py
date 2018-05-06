@@ -23,6 +23,7 @@ class Brain:
     def __init__(self):
         self.graph = Graph(user=secrets['db_user'], password=secrets['db_pass'])
         self._initialize_attrs()
+        self.queued_changes = {}
 
     def calculate_passenger(self, passenger):
         '''
@@ -52,11 +53,22 @@ class Brain:
         return primary_neuron
 
     def calculate_result(self, primary_neuron):
-        pass
+        if primary_neuron.results
+            self.backpropogate(primary_neuron)
+        else:
+            return primary_neuron.results
         # if primary_neuron has result, backpropogate
         # else, calculate
 
     def backpropogate(self, primary_neuron):
+        for attr in Attribute.select(self.graph):
+            raw_value = (attr.weight * attr.value) + attr.bias
+            sig_deriv = scipy.misc.derivative(self._sigmoid, raw_value, order=7)
+            bias_nudge = sig_deriv * 2 * (primary_neuron.activation - primary_neuron.results)
+            weight_nudge = attr.value * bias_nudge
+
+        # add up squares of differences as cost 
+        # find closest local minimum of cost function (r)
         pass
 
     def _add_passenger_values(self, person_obj, attr_dict):
@@ -76,4 +88,4 @@ class Brain:
             self.graph.push(attribute)
 
     def _sigmoid(self, num):
-        return (1 / (1 + exp(-num)))
+        return float(1 / (1 + exp(-num)))
