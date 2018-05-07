@@ -9,16 +9,12 @@ class Passenger(models.Model):
     survived = models.IntegerField()
     # result
     ticket_class = models.IntegerField()
-    # actual int
     passenger_name = models.CharField(max_length=20)
     sex = models.IntegerField()
     # binning -> relative average
     age = models.IntegerField()
-    # actual int
     siblings_to_spouses = models.IntegerField()
-    # actual int
     parents_to_children = models.IntegerField()
-    # actual int
     ticket = models.CharField(default='none', max_length=12)
     # quantify ticket
     fare = models.IntegerField()

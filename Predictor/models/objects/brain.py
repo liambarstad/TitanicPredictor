@@ -23,49 +23,22 @@ class Brain:
 
     def __init__(self):
         self.graph = Graph(user=secrets['db_user'], password=secrets['db_pass'])
-        self._initialize_attrs()
+        self.initialize_attrs()
         self.queued_changes = {}
 
+    def initialize_attrs(self):
+        for attr in self.attr_ledger:
+            attribute = Attribute()
+            attribute.attribute_name = attr
+            attribute.weight = 1
+            attribute.bias = 0
+            self.graph.push(attribute)
+
     def calculate_passenger(self, passenger):
-        self.add_passenger(passenger)
-        primary_neuron = self.add_primary_neuron(passenger.survived)
-        result = self.calculate_result(primary_neuron)
+        self._add_passenger(passenger)
+        primary_neuron = self._add_primary_neuron(passenger.survived)
+        result = self._calculate_result(primary_neuron)
         return result
-
-    def add_passenger(self, passenger):
-        new_passenger = Person()
-        new_passenger.name = passenger.passenger_name
-        passenger_attrs = passenger.to_dict()
-        survived = passenger_attrs.pop('survived')
-        new_passenger.result = survived
-        self._add_passenger_values(new_passenger, passenger_attrs)
-        return new_passenger
-
-    def add_primary_neuron(self, result=None):
-        primary_neuron = PrimaryNeuron()
-        primary_neuron.activation = 0
-        for attribute in Attribute.select(self.graph):
-            attribute.create_relationship(self.graph, primary_neuron, 'HAS_NEURON')
-            primary_neuron.activation += (attribute.weight * attribute.value) + attribute.bias
-        primary_neuron.activation = self._sigmoid(primary_neuron.activation)
-        primary_neuron.result = result
-        self.graph.push(primary_neuron)
-        return primary_neuron
-
-    def calculate_result(self, primary_neuron):
-        if isinstance(primary_neuron.result, (int, float)):
-            self.backpropogate(primary_neuron)
-            return None
-        else:
-            return primary_neuron.result
-
-    def backpropogate(self, primary_neuron):
-        for attr in Attribute.select(self.graph):
-            raw_value = (attr.weight * attr.value) + attr.bias
-            sig_deriv = derivative(self._sigmoid, raw_value, order=7)
-            bias_nudge = sig_deriv * 2 * (primary_neuron.activation - primary_neuron.result)
-            weight_nudge = attr.value * bias_nudge
-            self._add_to_queue(attr.attribute_name, weight_nudge, bias_nudge)
 
     def push_queue(self):
         for name, info in self.queued_changes.items():
@@ -76,6 +49,42 @@ class Brain:
             attribute.bias += bias
             self.graph.push(attribute)
 
+    def _add_passenger(self, passenger):
+        new_passenger = Person()
+        new_passenger.name = passenger.passenger_name
+        passenger_attrs = passenger.to_dict()
+        survived = passenger_attrs.pop('survived')
+        new_passenger.result = survived
+        self._add_passenger_values(new_passenger, passenger_attrs)
+        return new_passenger
+
+    def _add_primary_neuron(self, result=None):
+        primary_neuron = PrimaryNeuron()
+        primary_neuron.activation = 0
+        for attribute in Attribute.select(self.graph):
+            attribute.create_relationship(self.graph, primary_neuron, 'HAS_NEURON')
+            primary_neuron.activation += (attribute.weight * attribute.value) + attribute.bias
+        primary_neuron.activation = self._sigmoid(primary_neuron.activation)
+        primary_neuron.result = result
+        self.graph.push(primary_neuron)
+        return primary_neuron
+
+    def _calculate_result(self, primary_neuron):
+        if isinstance(primary_neuron.result, (int, float)):
+            self._backpropogate(primary_neuron)
+            return None
+        else:
+            return primary_neuron.result
+
+    def _backpropogate(self, primary_neuron):
+        for attr in Attribute.select(self.graph):
+            raw_value = (attr.weight * attr.value) + attr.bias
+            sig_deriv = derivative(self._sigmoid, raw_value, order=7)
+            bias_nudge = sig_deriv * 2 * (primary_neuron.activation - primary_neuron.result)
+            weight_nudge = attr.value * bias_nudge
+            self._add_to_queue(attr.attribute_name, weight_nudge, bias_nudge)
+
+
     def _add_passenger_values(self, person_obj, attr_dict):
         for key, value in attr_dict.items():
             attribute = Attribute.select(self.graph).where(f"_.attribute_name = '{key}'").first()
@@ -84,13 +93,12 @@ class Brain:
             person_obj.create_relationship(self.graph, attribute, 'HAS_ATTRIBUTE')
         self.graph.push(person_obj)
 
-    def _initialize_attrs(self):
-        for attr in self.attr_ledger:
-            attribute = Attribute()
-            attribute.attribute_name = attr
-            attribute.weight = 1
-            attribute.bias = 0
-            self.graph.push(attribute)
+    def prune(self):
+        Person.select(self.graph).delete()
+        PrimaryNeuron.select(self.graph).delete()
+
+    def clear(self):
+        self.graph.delete_all()
 
     def _sigmoid(self, num):
         return float(1 / (1 + exp(-num)))

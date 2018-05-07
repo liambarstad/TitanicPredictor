@@ -17,8 +17,8 @@ class PassengerManager(models.Manager):
             embarked_from=self.format_embarked_from(row[11]),
                 )[0]
 
-    def format_passenger_type(purpose):
-        purposes = {'train': 0, 'test': 1, 'consumer': 2}
+    def format_passenger_type(self, purpose):
+        purposes = {'train': 0, 'check': 1, 'consumer': 2}
         return purposes[purpose]
 
     def format_int(self, value):
