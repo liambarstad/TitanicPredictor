@@ -3,3 +3,4 @@ from py2neo.ogm import Property
 
 class PrimaryNeuron(ApplicationGraphObject):
     activation = Property('activation')
+    result = Property('result')

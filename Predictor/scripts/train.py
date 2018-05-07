@@ -1,7 +1,7 @@
-from Predictor.models.objects.brain import Brain
+#from Predictor.models.objects.brain import Brain
 
 def train():
-    brain = Brain()
+    #brain = Brain()
     training_passengers = Passenger.objects.filter(passenger_type=0)
     if len(training_passengers) > 0:
         pass
